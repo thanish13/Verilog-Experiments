@@ -1,0 +1,123 @@
+
+module mux(
+    input a,
+    input b,
+    input c,
+    input d0,
+    input d1,
+    input d2,
+    input d3,
+    input d4,
+    input d5,
+    input d6,
+    input d7,
+    output data
+    );
+    reg data;
+    always@(*)
+    begin
+    if (a==0&&b==0&&c==0)
+    begin
+    data=d0;
+    end
+    else if (a==0&&b==0&&c==1)
+    begin
+    data=d1;
+    end
+    else if (a==0&&b==1&&c==0)
+    begin
+    data=d2;
+    end
+    else if (a==0&&b==1&&c==1)
+    begin
+    data=d3;
+    end
+    else if (a==1&&b==0&&c==0)
+    begin
+    data=d4;
+    end
+    else if (a==1&&b==0&&c==1)
+    begin
+    data=d5;
+    end
+    else if (a==1&&b==1&&c==0)
+    begin
+    data=d6;
+    end
+    else if (a==1&&b==1&&c==1)
+    begin
+    data=d7;
+    end
+    end
+ endmodule
+module mux(
+    input a,
+    input b,
+    input c,
+    input d0,
+    input d1,
+    input d2,
+    input d3,
+    input d4,
+    input d5,
+    input d6,
+    input d7,
+    output data
+    );
+    reg data;
+    always@(*)
+    begin
+    if (a==0&&b==0&&c==0)
+    begin
+    data=d0;
+    end
+    else if (a==0&&b==0&&c==1)
+    begin
+    data=d1;
+    end
+    else if (a==0&&b==1&&c==0)
+    begin
+    data=d2;
+    end
+    else if (a==0&&b==1&&c==1)
+    begin
+    data=d3;
+    end
+    else if (a==1&&b==0&&c==0)
+    begin
+    data=d4;
+    end
+    else if (a==1&&b==0&&c==1)
+    begin
+    data=d5;
+    end
+    else if (a==1&&b==1&&c==0)
+    begin
+    data=d6;
+    end
+    else if (a==1&&b==1&&c==1)
+    begin
+    data=d7;
+    end
+    end
+ endmodule
+
+
+
+module mux_tb;
+reg a,b,c,d0,d1,d2,d3,d4,d5,d6,d7;
+wire data;
+mux a1(a,b,c,d0,d1,d2,d3,d4,d5,d6,d7,data);
+initial
+begin
+d0=0;d1=1;d2=0;d3=1;d4=0;d5=1;d6=0;d7=1;
+a=0;b=0;c=0;
+#10 a=0;b=0;b=1;
+#10 a=0;b=1;c=0;
+#10 a=0;b=1;c=1;
+#10 a=1;b=0;c=0;
+#10 a=1;b=0;c=1;
+#10 a=1;b=1;c=0;
+#10 a=1;b=1;c=1;
+end
+endmodule

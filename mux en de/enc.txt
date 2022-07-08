@@ -1,0 +1,37 @@
+
+module priority_enc(q,d);
+    input [7:0]d;   
+    output [2:0]q;
+    reg [2:0]q;
+    always@(d)
+    begin
+    casex(d)
+    8'b00000001:q=3'b000;
+    8'b0000001x:q=3'b001;
+    8'b000001xx:q=3'b010;
+    8'b00001xxx:q=3'b011;
+    8'b0001xxxx:q=3'b100;
+    8'b001xxxxx:q=3'b101;
+    8'b01xxxxxx:q=3'b110;
+    8'b1xxxxxxx:q=3'b111;
+    endcase
+end
+endmodule
+
+
+module priority_enc_tb;
+reg [7:0]d;
+wire [2:0]q;
+priority_enc a1(q,d);
+initial
+begin
+d=8'b00000001;
+#10 d=8'b00000010;
+#10 d=8'b00000100;
+#10 d=8'b00001000;
+#10 d=8'b00010000;
+#10 d=8'b00100000;
+#10 d=8'b01000000;
+#10 d=8'b10000000;
+end
+endmodule

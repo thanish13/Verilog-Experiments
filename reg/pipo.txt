@@ -1,0 +1,51 @@
+module pipo(
+    input clk,
+    input d3,
+    input d2,
+    input d1,
+    input d0,
+    output q3,
+    output q2,
+    output q1,
+    output q0
+    );
+    DFF t1(d3,clk,q3);
+    DFF t2(d2,clk,q2);
+    DFF t3(d1,clk,q1);
+    DFF t4(d0,clk,q0);
+endmodule
+            
+            
+ module DFF(
+                input D,
+                input clk,
+                output Q
+                );
+                reg Q;
+                    always@(negedge clk)
+                    begin
+                    
+                    casex(D)
+                        1'b0:Q=0;
+                        1'b1:Q=1;
+                    endcase
+                    end    
+       
+endmodule
+
+module pipo_tb;
+
+reg d3,d2,d1,d0,clk;
+wire q3,q2,q1,q0;
+pipo a1(clk,d3,d2,d1,d0,q3,q2,q1,q0);
+initial begin
+    clk=0;
+    forever #05 clk=~clk;
+end
+initial
+begin 
+d3=1;d2=0;d1=1;d0=0;
+#20 d3=0;d2=1;d1=0;d0=1;
+end
+endmodule
+

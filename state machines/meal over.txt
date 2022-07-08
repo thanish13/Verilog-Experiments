@@ -1,0 +1,55 @@
+module mealy_overlap(
+    input in,
+    input rst,
+    input clk,
+    output reg out
+    );
+    reg [1:0]cs,ns;
+        parameter s0=2'b00,s1=2'b01,s2=2'b10;
+        always@(posedge clk,negedge rst)
+        if (rst==0)
+        begin 
+        cs<=s0;
+        end
+        else 
+        begin
+        cs<=ns;
+        end
+        always@(cs or in)
+        begin
+        case({cs,in})
+        3'b000: begin ns=s0;out=0;end
+        3'b001: begin ns=s1;out=0;end
+        3'b010: begin ns=s2;out=0;end
+        3'b011: begin ns=s1;out=0;end
+        3'b100: begin ns=s0;out=0;end
+        3'b101: begin ns=s1;out=1;end
+        
+        endcase
+        end
+endmodule
+
+module mealy_overlap_tb;
+
+reg in,rst,clk;wire out;
+mealy_overlap a(in,rst,clk,out);
+initial begin
+rst=1;
+#2 rst=0;
+#2 rst=1;
+end
+initial begin
+clk=0;
+forever #10 clk=~clk;
+end
+initial begin
+in=0;
+#20 in=1;
+#20 in=0;
+#20 in=1;
+#20 in=0;
+#20 in=1;
+#20 in=0;
+#20 in=1;
+end
+endmodule

@@ -1,0 +1,42 @@
+
+module SRFF(
+    input S,
+    input R,
+    input clk,
+    output Q,
+    output Qb
+    );
+reg Q,Qb;
+        initial 
+        begin
+        Q=1'b0;Qb=~Q;
+        end
+        always@(posedge clk)
+        begin
+        casex({S,R})
+        { 1'b0,1'b0 } :begin Q=Q; Qb=Qb; end
+        { 1'b0,1'b1 } :begin Q=1'b0; Qb=1'b1; end
+        { 1'b1,1'b0 } :begin Q=1'b1; Qb=1'b0; end
+        { 1'b1,1'b1 } :begin Q=1'bx; Qb=1'bx; end
+        endcase
+        end
+             
+    endmodule
+
+module SRFF_tb;
+reg S,R,clk;
+wire Q,Qb;
+SRFF a1(S,R,clk,Q,Qb);
+initial begin
+  clk=0;
+     forever #10 clk = ~clk;  
+end 
+
+initial
+begin
+S=0;R=0;
+#150 S=0;R=1;
+#150 S=1;R=0;
+#150 S=1;R=1;
+end
+endmodule

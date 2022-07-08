@@ -1,0 +1,45 @@
+module siso(
+    input din,
+    input clk,
+    output q0
+    );
+    wire q3,q2,q1;
+    DFF t3(din,clk,q3);
+    DFF t2(q3,clk,q2);
+    DFF t1(q2,clk,q1);
+    DFF t0(q1,clk,q0);
+endmodule
+    
+    
+module DFF(
+        input D,
+        input clk,
+        output Q
+        );
+        reg Q;
+            always@(negedge clk)
+            begin
+            
+            casex(D)
+                1'b0:Q=0;
+                1'b1:Q=1;
+            endcase
+            end    
+endmodule
+
+module siso_tb;
+reg din,clk;
+wire q0;
+siso a1(din,clk,q0);
+initial begin
+    clk=0;
+    forever #05 clk=~clk;
+end
+initial
+begin 
+din=1;
+#10 din=0;
+#10 din=1;
+#10 din=0;
+end
+endmodule

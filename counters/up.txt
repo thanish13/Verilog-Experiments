@@ -1,0 +1,50 @@
+module upcount(
+    input clk,
+    output q1,
+    output q2,
+    output q3,
+    output q4
+    );
+    wire x,y;
+    TFF t1(1,clk,q1);
+    TFF t2(q1,clk,q2);
+    TFF t3(x,clk,q3);
+    TFF t4(y,clk,q4);
+    and a1(x,q1,q2);
+    and a2(y,x,q3);
+    
+    
+    
+endmodule
+
+
+
+module TFF(
+    input T,
+    input clk,
+    output Q
+    );
+    reg Q;
+    initial begin
+    Q=1'b0;
+    end
+    always@(posedge clk)
+    begin
+    
+    casex(T)
+        1'b0:Q=Q;
+        1'b1:Q=~Q;
+    endcase
+    end    
+endmodule
+
+
+module upcounter_tb;
+reg clk;
+wire q1,q2,q3,q4;
+upcount a1(clk,q1,q2,q3,q4);
+initial begin
+    clk=0;
+    forever #10 clk=~clk;
+end
+endmodule

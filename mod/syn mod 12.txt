@@ -1,0 +1,48 @@
+module modsync(
+    input clk,
+    output q0,
+    output q1,
+    output q2,
+    output q3
+    );
+    wire t3,t2,w1,w2;
+    TFF f1(1,clk,q0);
+    TFF f2(q0,clk,q1);
+    and a1(t2,~q3,q1,q0);
+    TFF f3(t2,clk,q2);
+    and a2(w1,q1,q0);
+    or a3(w2,q2,q3);
+    and a4(t3,w1,w2);
+    
+    TFF f4(t3,clk,q3);
+    
+endmodule
+module TFF(
+    input T,
+    input clk,
+    output Q
+    );
+    reg Q;
+    initial begin
+    Q=1'b0;
+    end
+    always@(posedge clk)
+    begin
+    
+    casex(T)
+        1'b0:Q=Q;
+        1'b1:Q=~Q;
+    endcase
+    end    
+endmodule
+
+
+module modsync_tb;
+reg clk;
+wire q0,q1,q2,q3;
+modsync a1(clk,q0,q1,q2,q3);
+initial begin
+    clk=0;
+    forever #10 clk=~clk;
+end
+endmodule

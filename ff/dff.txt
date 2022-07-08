@@ -1,0 +1,31 @@
+module DFF(
+    input D,
+    input clk,
+    output Q
+    );
+    reg Q;
+        always@(posedge clk)
+        begin
+        
+        casex(D)
+            1'b0:Q=0;
+            1'b1:Q=1;
+        endcase
+        end    
+    endmodule
+
+
+module D_tb;
+reg D,clk;
+wire Q;
+DFF a1(D,clk,Q);
+initial begin
+clk=0;
+forever #10 clk=~clk;
+end
+initial
+begin 
+D=0;
+#100 D=1;
+end
+endmodule

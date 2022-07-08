@@ -1,0 +1,46 @@
+module fulladder(a,b,c,sum,carry);
+    input a,b,c;
+    output sum,carry;
+    wire x,y,z;
+    xor(sum,a,b,c);
+    and(x,a,b);
+    and(y,b,c);
+    and(z,c,a);
+    or(carry,x,y,z);
+endmodule
+module ripplecarryadder(f,s,c0,out,car);
+    input [7:0] f,s;
+    input c0;
+    output [7:0] out;
+    output car;
+    wire c1,c2,c3,c4,c5,c6,c7;
+    fulladder u1(f[0],s[0],c0,out[0],c1);
+    fulladder u2(f[1],s[1],c1,out[1],c2);
+    fulladder u3(f[2],s[2],c2,out[2],c3);
+    fulladder u4(f[3],s[3],c3,out[3],c4);
+    fulladder u5(f[4],s[4],c4,out[4],c5);
+    fulladder u6(f[5],s[5],c5,out[5],c6);
+    fulladder u7(f[6],s[6],c6,out[6],c7);
+    fulladder u8(f[7],s[7],c7,out[7],car);
+endmodule
+
+
+module ripplecarryadder_tb();
+    reg[7:0] f,s;
+    reg c0;
+    wire[7:0] out;
+    wire car;
+    ripplecarryadder elav(f,s,c0,out,car);
+    initial begin
+    f=8'h15;
+    s=8'h12;
+    c0=0;
+    #10
+    f=8'h31;
+    s=8'h3;
+    #10
+    f=8'hFE;
+    s=8'h5;
+    #10 $stop;
+    end
+endmodule

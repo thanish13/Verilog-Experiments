@@ -1,0 +1,49 @@
+module carry_lookahead(
+    input [3:0]a,
+    input [3:0]b,
+    input cin,
+    output [3:0]sum,
+    output carry
+    );
+    wire [3:0] p,g;
+    wire [3:0]c;
+    assign p=a^b;
+    assign g=a&b;
+    cla_block x(p,g,cin,c,sum,carry);
+    
+    
+endmodule
+module cla_block(p,g,cin,c,sum,carry);
+input [3:0] p,g;
+input cin;
+output [3:0]c;
+output [3:0]sum;
+output carry;
+assign c[0]=g[0]+(p[0]&cin);
+assign c[1]=g[1]+(p[1]&g[0])+(p[1]&p[0]&cin);
+assign c[2]=g[2]+(p[2]&g[1])+(p[2]&p[1]&g[0])+(p[2]&p[1]&p[0]&cin);
+assign c[3]=g[3]+(p[3]&g[2])+(p[3]&p[2]&g[1])+(p[3]&p[2]&p[1]&g[0])+(p[3]&p[2]&p[1]&p[0]&cin);
+
+    assign sum[0]=p[0]^cin;
+    assign sum[1]=p[1]^c[0];
+    assign sum[2]=p[2]^c[1];
+    assign sum[3]=p[3]^c[2];
+    assign carry=c[3];
+endmodule
+
+module carry_lookahead_tb;
+reg [3:0]a;
+reg [3:0]b;
+reg cin;
+wire carry;
+wire [3:0]sum;
+carry_lookahead a1(a,b,cin,sum,carry);
+initial 
+begin
+a=4'b0000;b=4'b0000;cin=0;
+#100
+a=4'b0101;b=4'b0101;cin=0;
+#50
+a=4'b1110;b=4'b0001;cin=1;
+end
+endmodule

@@ -1,0 +1,63 @@
+module piso(
+     input d0,
+     input d1,
+     input d2,
+     input d3,
+     input clk,
+     input m,
+     output q3
+     );
+     wire d0,d1,d2,d3;
+     wire q0,q1,q2;
+     wire w1,w2,w3,w4,w5,w6,w7,w8,w9;
+     DFF f1(d0,clk,q0);
+     and a1(w1,q0,m);
+     and a2(w2,~m,d1);
+     or a3(w3,w1,w2);
+     
+     DFF f2(w3,clk,q1);
+     and a4(w4,q1,m);
+     and a5(w5,~m,d2);
+     or a6(w6,w4,w5);
+     
+     DFF f3(w6,clk,q2);
+     and a7(w7,q2,m);
+     and a8(w8,~m,d3);
+     or a9(w9,w7,w8);
+     
+     DFF f4(w9,clk,q3);
+     
+ endmodule
+ module DFF(
+     input D,
+     input clk,
+     output Q
+     );
+     reg Q;
+         always@(posedge clk)
+         begin
+         
+         casex(D)
+             1'b0:Q=0;
+             1'b1:Q=1;
+         endcase
+         end    
+     endmodule
+
+
+module piso_tb;
+reg d0,d1,d2,d3,m,clk;
+wire q3;
+piso g1(d0,d1,d2,d3,clk,m,q3);
+initial begin
+    clk=0;
+    forever #10 clk=~clk;
+end
+initial
+begin 
+m=0;d0=1;d1=0;d2=0;d3=1;
+#20 m=0;d0=1;d1=0;d2=1;d3=1;
+#20 m=0;d0=0;d1=1;d2=1;d3=0;
+#20 m=1;d0=1;d1=0;d2=0;d3=0;
+end
+endmodule

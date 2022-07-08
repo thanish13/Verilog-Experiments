@@ -1,0 +1,47 @@
+module mod9asy(
+input clk,
+output q0,
+output q1,
+output q2,
+output q3);
+wire clr;
+assign clr=~(q3&q0);
+TFF f1(clk,1,~clr,q0);
+TFF f2(q0,1,~clr,q1);
+TFF f3(q1,1,~clr,q2);
+TFF f4(q2,1,~clr,q3);
+endmodule
+module TFF(
+input clk,
+input T,
+input clr,
+output reg q);
+initial begin
+q=0;
+end
+always@(negedge clk or posedge clr)
+begin
+if (clr==1)
+begin
+q=0;
+end
+else if(clr==0)
+
+case(T)
+1'b0:q=q;
+1'b1:q=~q;
+endcase
+
+end
+endmodule
+
+
+module mod9asy_tb();
+reg clk;
+wire q0,q1,q2,q3;
+mod9asy a1(clk,q0,q1,q2,q3);
+initial begin
+clk=0;
+forever #10 clk=~clk;
+end
+endmodule

@@ -1,0 +1,34 @@
+module TFF(
+    input T,
+    input clk,
+    output Q
+    );
+    reg Q;
+    initial begin
+    Q=1'b0;
+    end
+    always@(posedge clk)
+    begin
+    
+    casex(T)
+        1'b0:Q=Q;
+        1'b1:Q=~Q;
+    endcase
+    end    
+endmodule
+
+module TFF_tb;
+reg T,clk;
+wire Q;
+TFF a1(T,clk,Q);
+initial begin
+  clk=0;
+     forever #10 clk = ~clk;  
+end 
+
+initial
+begin
+T=0;
+#150 T=1;
+end
+endmodule

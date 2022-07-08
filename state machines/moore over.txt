@@ -1,0 +1,67 @@
+module moore_overlap(
+    input in,
+    input rst,
+    input clk,
+    output reg out
+    );
+    reg [1:0]cs,ns;
+        parameter s0=2'b00,s1=2'b01,s2=2'b10,s3=2'b11;
+        always@(posedge clk,negedge rst)
+        if (rst==0)
+        begin 
+        cs<=s0;
+        end
+        else 
+        begin
+        cs<=ns;
+        end
+        always@(cs or in)
+        begin
+        case({cs,in})
+        3'b000: ns=s0;
+        3'b001: ns=s1;
+        3'b010: ns=s2;
+        3'b011: ns=s1;
+        3'b100: ns=s0;
+        3'b101: ns=s3;
+        3'b110: ns=s2;
+        3'b111: ns=s1;
+        endcase
+        end
+        always@(cs or in)
+        begin
+        case(cs)
+        2'b00: out=0;
+        2'b01: out=0;
+        2'b10: out=0;
+        2'b11: out=1;
+        endcase
+        end
+        
+    
+endmodule
+
+
+module moore_overlap_tb;
+reg in,rst,clk;wire out;
+moore_overlap a(in,rst,clk,out);
+initial begin
+rst=1;
+#2 rst=0;
+#2 rst=1;
+end
+initial begin
+clk=0;
+forever #10 clk=~clk;
+end
+initial begin
+in=0;
+#20 in=1;
+#20 in=0;
+#20 in=1;
+#20 in=0;
+#20 in=1;
+#20 in=0;
+#20 in=1;
+end
+endmodule

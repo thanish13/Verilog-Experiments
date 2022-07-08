@@ -1,0 +1,42 @@
+module JKFF(
+    input J,
+    input K,
+    input clk,
+    output Q,
+    output Qb
+    );
+    reg Q,Qb;
+    initial 
+    begin
+    Q=1'b0;Qb=~Q;
+    end
+    always@(posedge clk)
+    begin
+    casex({J,K})
+    { 1'b0,1'b0 } :begin Q=Q; Qb=Qb; end
+    { 1'b0,1'b1 } :begin Q=1'b0; Qb=1'b1; end
+    { 1'b1,1'b0 } :begin Q=1'b1; Qb=1'b0; end
+    { 1'b1,1'b1 } :begin Q=~Q; Qb=~Qb; end
+    endcase
+    end
+         
+endmodule
+
+
+module JKFF_tb;
+reg J,K,clk;
+wire Q,Qb;
+JKFF a1(J,K,clk,Q,Qb);
+initial begin
+  clk=0;
+     forever #10 clk = ~clk;  
+end 
+
+initial
+begin
+J=0;K=0;
+#150 J=0;K=1;
+#150 J=1;K=0;
+#150 J=1;K=1;
+end
+endmodule
